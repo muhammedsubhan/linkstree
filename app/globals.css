@@ -1,3 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Base label styles */
+.label-animation {
+  font-size: 16px;
+  pointer-events: none;
+}
+
+/* Label animation when active */
+.label-active {
+  top: -3px;
+  font-size: 12px;
+  color: gray; /* Blue shade for active state */
+
+  padding: 0 4px;
+  border-radius: 4px;
+}
