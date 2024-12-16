@@ -7,6 +7,7 @@ import google_logo from "@/public/google.png";
 import logo from "@/public/linktree-logo.png";
 import { FaRegEye } from "react-icons/fa6";
 import { FaRegEyeSlash } from "react-icons/fa6";
+import { TextField } from "@mui/material";
 
 const Signup = () => {
   const [showpassword, setShowPassword] = useState<Boolean>(false);
@@ -24,43 +25,83 @@ const Signup = () => {
             <Image src={logo} height={25} width={19} alt="linktree-logo" />
           </div>
           <div className="">
-            <div className="flex flex-col items-center gap-4 mb-5">
+            <div className="flex flex-col items-center gap-4 mb-10">
               <h1 className="text-5xl font-bold">Join Linktree</h1>
               <p className="text-gray-500 text-lg">Sign up for free!</p>
             </div>
             <form className="flex justify-center ">
               <div className="flex flex-col gap-5">
-                <div className="w-full flex flex-col gap-3">
-                  <div className=" flex flex-col gap-2">
-                    <label htmlFor="email">Email:</label>
-                    <input
-                      className=" w-[650px] h-[45px] px-2 py-6 bg-gray-100  rounded-lg"
-                      type="email"
-                      id="email"
+                <div className="w-full flex flex-col gap-6">
+                  <div className=" flex flex-col gap-2 bg-gray-100">
+                    <TextField
+                      id="outlined-basic"
+                      label="Email"
                       name="email"
+                      variant="outlined"
+                      sx={{
+                        borderRadius: "8px",
+                        "& .MuiOutlinedInput-root": {
+                          borderRadius: "8px",
+                          "&:hover fieldset": {
+                            borderColor: "lightgray",
+                            borderWidth: "2px",
+                          },
+                          "&.Mui-focused fieldset": {
+                            borderColor: "black",
+                          },
+                        },
+                        "& .MuiInputLabel-root": {
+                          color: "gray",
+                        },
+                        "& .MuiInputLabel-root.Mui-focused": {
+                          color: "gray",
+                        },
+                      }}
                     />
                   </div>
                   <div className=" flex flex-col gap-2">
-                    <label htmlFor="email">Password:</label>
-                    <div className=" flex items-center w-[650px] px-2 py-6 h-[45px]  bg-gray-100 rounded-lg ">
-                      <input
-                        className=" w-[650px] h-[45px]  bg-gray-100  rounded-lg focus:outline-none"
-                        type={showpassword ? "text" : "password"}
-                        id="password"
+                    <div className=" flex items-center w-[650px]  bg-gray-100 rounded-lg ">
+                      <TextField
+                        id="outlined-basic"
+                        label="Password"
                         name="password"
+                        variant="outlined"
+                        type={showpassword ? "text" : "password"}
+                        className="w-full"
+                        sx={{
+                          borderRadius: "8px",
+                          "& .MuiOutlinedInput-root": {
+                            borderRadius: "8px",
+                            "&:hover fieldset": {
+                              borderColor: "lightgray",
+                              borderWidth: "2px",
+                            },
+                            "&.Mui-focused fieldset": {
+                              borderColor: "black",
+                            },
+                          },
+                          "& .MuiInputLabel-root": {
+                            color: "gray",
+                          },
+                          "& .MuiInputLabel-root.Mui-focused": {
+                            color: "gray",
+                          },
+                        }}
                       />
-                      <div
+                      {/* <div
                         className="px-2 cursor-pointer"
                         onClick={handleShowPassword}
                       >
                         {showpassword ? <FaRegEye /> : <FaRegEyeSlash />}
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 </div>
 
                 <div className="cursor-pointer bg-purple-700 text-white py-3 text-center rounded-full">
-                  <button className="text-lg font-medium">Continue</button>
+                  <button className="text-lg font-medium">
+                    Create Account
+                  </button>
                 </div>
               </div>
             </form>
@@ -77,7 +118,7 @@ const Signup = () => {
                   <span className="underline">T&Cs</span> and to receive offers,
                   news and updates.
                 </p>
-                <p>OR</p>
+                <p className="text-gray-500">OR</p>
 
                 <div>
                   <div className="cursor-pointer bg-white text-black flex  items-center justify-center gap-4 py-3 text-center rounded-full border border-gray-100 hover:bg-gray-100 transition-all ">
