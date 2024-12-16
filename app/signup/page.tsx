@@ -25,7 +25,7 @@ const Signup = () => {
             <h1 className="text-3xl font-medium">Linktree</h1>
             <Image src={logo} height={25} width={19} alt="linktree-logo" />
           </div>
-          <div className="">
+          <div className="px-5"> 
             <div className="flex flex-col items-center gap-4 mb-10">
               <h1 className="text-5xl font-bold">Join Linktree</h1>
               <p className="text-gray-500 text-lg">Sign up for free!</p>
@@ -33,7 +33,7 @@ const Signup = () => {
             <form className="flex justify-center ">
               <div className="flex flex-col gap-5">
                 <div className="w-full flex flex-col gap-6">
-                  <div className=" flex flex-col gap-2 bg-gray-100">
+                  <div className=" flex flex-col gap-2 bg-gray-100 ">
                     <TextField
                       id="outlined-basic"
                       label="Email"
@@ -105,13 +105,6 @@ const Signup = () => {
                           },
                         }}
                       />
-
-                      {/* <div
-                        className="px-2 cursor-pointer"
-                        onClick={handleShowPassword}
-                      >
-                        {showpassword ? <FaRegEye /> : <FaRegEyeSlash />}
-                      </div> */}
                     </div>
                   </div>
                 </div>
@@ -179,6 +172,7 @@ const Signup = () => {
             alt="signup-banner"
             style={{ height: "100%", width: "100vh", objectFit: "cover" }}
             priority
+            className="lg:hidden flex"
           />
         </div>
       </div>

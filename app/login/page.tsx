@@ -105,13 +105,6 @@ const Login = () => {
                           },
                         }}
                       />
-
-                      {/* <div
-                          className="px-2 cursor-pointer"
-                          onClick={handleShowPassword}
-                        >
-                          {showpassword ? <FaRegEye /> : <FaRegEyeSlash />}
-                        </div> */}
                     </div>
                   </div>
                 </div>
@@ -177,6 +170,7 @@ const Login = () => {
             src={login_banner}
             alt="signup-banner"
             style={{ height: "100%", width: "100vh", objectFit: "cover" }}
+            className="lg:hidden flex"
             priority
           />
         </div>
