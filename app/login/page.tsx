@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import signup_banner from "@/public/signup-banner.png";
+import login_banner from "@/public/login-banner.png";
 import google_logo from "@/public/google.png";
 import logo from "@/public/linktree-logo.png";
 import { FaRegEye } from "react-icons/fa6";
@@ -10,7 +10,7 @@ import { FaRegEyeSlash } from "react-icons/fa6";
 import { TextField, InputAdornment, IconButton } from "@mui/material";
 import Link from "next/link";
 
-const Signup = () => {
+const Login = () => {
   const [showpassword, setShowPassword] = useState<Boolean>(false);
 
   const handleShowPassword = () => {
@@ -27,8 +27,8 @@ const Signup = () => {
           </div>
           <div className="">
             <div className="flex flex-col items-center gap-4 mb-10">
-              <h1 className="text-5xl font-bold">Join Linktree</h1>
-              <p className="text-gray-500 text-lg">Sign up for free!</p>
+              <h1 className="text-5xl font-bold">Welcome back</h1>
+              <p className="text-gray-500 text-lg">Log in to your Linktree</p>
             </div>
             <form className="flex justify-center ">
               <div className="flex flex-col gap-5">
@@ -107,11 +107,11 @@ const Signup = () => {
                       />
 
                       {/* <div
-                        className="px-2 cursor-pointer"
-                        onClick={handleShowPassword}
-                      >
-                        {showpassword ? <FaRegEye /> : <FaRegEyeSlash />}
-                      </div> */}
+                          className="px-2 cursor-pointer"
+                          onClick={handleShowPassword}
+                        >
+                          {showpassword ? <FaRegEye /> : <FaRegEyeSlash />}
+                        </div> */}
                     </div>
                   </div>
                 </div>
@@ -153,10 +153,10 @@ const Signup = () => {
                 </div>
                 <div className="mt-8">
                   <p className="text-gray-500">
-                    Already have an account?{" "}
-                    <Link href="/login">
+                    Don't have an account?{" "}
+                    <Link href="/signup">
                       <span className="text-purple-700 underline cursor-pointer">
-                        Log in.
+                        Sign up.
                       </span>
                     </Link>
                   </p>
@@ -175,7 +175,7 @@ const Signup = () => {
           }}
         >
           <Image
-            src={signup_banner}
+            src={login_banner}
             alt="signup-banner"
             style={{ height: "100%", width: "100vh", objectFit: "cover" }}
             priority
@@ -186,4 +186,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default Login;
