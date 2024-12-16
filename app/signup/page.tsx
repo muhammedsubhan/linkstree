@@ -136,7 +136,7 @@ const Signup = () => {
                   <span className="underline">T&Cs</span> and to receive offers,
                   news and updates.
                 </p>
-                <p className="text-gray-500">OR</p>
+                <p className="text-gray-500 font-medium">OR</p>
 
                 <div>
                   <div className="cursor-pointer bg-white text-black flex  items-center justify-center gap-4 py-3 text-center rounded-full border border-gray-100 hover:bg-gray-100 transition-all ">

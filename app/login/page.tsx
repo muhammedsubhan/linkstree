@@ -126,17 +126,7 @@ const Login = () => {
 
             <div className="flex justify-center mt-5">
               <div className="w-[650px] text-center flex flex-col gap-4">
-                <p className="text-center text-gray-500">
-                  By clicking{" "}
-                  <span className="text-gray-600 font-medium">
-                    Create account
-                  </span>
-                  , you agree to Linktree's{" "}
-                  <span className="underline">privacy notice</span>,{" "}
-                  <span className="underline">T&Cs</span> and to receive offers,
-                  news and updates.
-                </p>
-                <p className="text-gray-500">OR</p>
+                <p className="text-gray-500 font-medium">OR</p>
 
                 <div>
                   <div className="cursor-pointer bg-white text-black flex  items-center justify-center gap-4 py-3 text-center rounded-full border border-gray-100 hover:bg-gray-100 transition-all ">
@@ -150,6 +140,15 @@ const Login = () => {
                       Sign up with Google
                     </button>
                   </div>
+                </div>
+                <div className="flex  justify-center gap-3 mt-4">
+                  <p className="underline text-purple-600 cursor-pointer">
+                    Forgot password?
+                  </p>
+                  <p className="text-xl">•</p>
+                  <p className="underline text-purple-600 cursor-pointer">
+                    Forgot email?
+                  </p>
                 </div>
                 <div className="mt-8">
                   <p className="text-gray-500">
