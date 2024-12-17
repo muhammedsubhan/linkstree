@@ -11,7 +11,7 @@ import { TextField, InputAdornment, IconButton } from "@mui/material";
 import Link from "next/link";
 
 const Signup = () => {
-  const [showpassword, setShowPassword] = useState<Boolean>(false);
+  const [showpassword, setShowPassword] = useState<boolean>(false);
 
   const handleShowPassword = () => {
     setShowPassword((prevValue) => !prevValue);
