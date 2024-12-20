@@ -14,7 +14,7 @@ const Signup = () => {
   const [showpassword, setShowPassword] = useState<boolean>(false);
 
   const handleShowPassword = () => {
-    setShowPassword((prevValue) => !prevValue);
+    setShowPassword((prevValue) => !prevValue); 
   };
 
   return (
