@@ -9,12 +9,40 @@ import { FaRegEye } from "react-icons/fa6";
 import { FaRegEyeSlash } from "react-icons/fa6";
 import { TextField, InputAdornment, IconButton } from "@mui/material";
 import Link from "next/link";
+import {
+  SignUpCredentials,
+  SignUpUser,
+} from "../utiles/services/signUp.service";
+import { useRouter } from "next/navigation";
 
 const Signup = () => {
   const [showpassword, setShowPassword] = useState<boolean>(false);
+  const [createUser, setCreateUser] = useState<SignUpCredentials>({
+    email: "",
+    password: "",
+  });
+
+  const router = useRouter();
 
   const handleShowPassword = () => {
-    setShowPassword((prevValue) => !prevValue); 
+    setShowPassword((prevValue) => !prevValue);
+  };
+
+  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setCreateUser((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSignUpUser = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const newUser = await SignUpUser(createUser);
+
+    if (newUser) {
+      router.push("/login");
+    }
   };
 
   return (
@@ -40,6 +68,8 @@ const Signup = () => {
                       id="outlined-basic"
                       label="Email"
                       name="email"
+                      value={createUser.email}
+                      onChange={handleOnChange}
                       variant="outlined"
                       className="xl:w-[500px] lg:w-full"
                       sx={{
@@ -69,7 +99,9 @@ const Signup = () => {
                         id="outlined-basic"
                         label="Password"
                         name="password"
+                        value={createUser.password}
                         variant="outlined"
+                        onChange={handleOnChange}
                         type={showpassword ? "text" : "password"}
                         className="w-[650px] xl:w-[500px] lg:w-full"
                         InputProps={{
@@ -112,7 +144,10 @@ const Signup = () => {
                   </div>
                 </div>
 
-                <div className="cursor-pointer bg-purple-700 text-white py-3 text-center rounded-full">
+                <div
+                  onClick={handleSignUpUser}
+                  className="cursor-pointer bg-purple-700 text-white py-3 text-center rounded-full"
+                >
                   <button className="text-lg font-medium">
                     Create Account
                   </button>

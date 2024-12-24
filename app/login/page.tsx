@@ -9,12 +9,39 @@ import { FaRegEye } from "react-icons/fa6";
 import { FaRegEyeSlash } from "react-icons/fa6";
 import { TextField, InputAdornment, IconButton } from "@mui/material";
 import Link from "next/link";
+import { redirect, useRouter } from "next/navigation";
+import { LoginCredentials, loginUser } from "../utiles/services/login.service";
 
 const Login = () => {
   const [showpassword, setShowPassword] = useState<boolean>(false);
+  const [loginUserData, setLoginUserData] = useState<LoginCredentials>({
+    email: "",
+    password: "",
+  });
+
+  const router = useRouter();
 
   const handleShowPassword = () => {
     setShowPassword((prevValue) => !prevValue);
+  };
+  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setLoginUserData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleLoginUser = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const newloginUser = await loginUser(loginUserData);
+
+    if (!newloginUser.access_token) {
+      console.log("some issues ");
+    }
+
+    localStorage.setItem("accessToken", newloginUser.access_token);
+    redirect("/admin");
   };
 
   return (
@@ -40,6 +67,8 @@ const Login = () => {
                       id="outlined-basic"
                       label="Email"
                       name="email"
+                      value={loginUserData.email}
+                      onChange={handleOnChange}
                       className="xl:w-[500px] lg:w-full"
                       variant="outlined"
                       sx={{
@@ -69,6 +98,8 @@ const Login = () => {
                         id="outlined-basic"
                         label="Password"
                         name="password"
+                        value={loginUserData.password}
+                        onChange={handleOnChange}
                         variant="outlined"
                         type={showpassword ? "text" : "password"}
                         className="w-[650px] xl:w-[500px] lg:w-full"
@@ -112,7 +143,10 @@ const Login = () => {
                   </div>
                 </div>
 
-                <div className="cursor-pointer bg-purple-700 text-white py-3 text-center rounded-full">
+                <div
+                  onClick={handleLoginUser}
+                  className="cursor-pointer bg-purple-700 text-white py-3 text-center rounded-full"
+                >
                   <button className="text-lg font-medium">Log in</button>
                 </div>
               </div>

@@ -9,12 +9,13 @@ import { PiGraphThin } from "react-icons/pi";
 import { IoSettingsOutline } from "react-icons/io5";
 import Image from "next/image";
 import admin_logo from "@/public/linktree_svg.svg";
+import AdminLinksComponent from "../components/adminPageComp/AdminLinksComponent";
 
 const Admin = () => {
   const [activeNav, setActiveNav] = useState<string>("Links");
   return (
     <>
-      <div className="bg-[#F3F3F1]">
+      <div className="bg-[#F3F3F1] flex ">
         <div className="border-r max-w-[240px] h-screen">
           <div className="mx-3 h-full flex flex-col">
             <div className="py-5 px-2">
@@ -144,6 +145,9 @@ const Admin = () => {
               </nav>
             </div>
           </div>
+        </div>
+        <div className="w-[1130px]">
+          <AdminLinksComponent />
         </div>
       </div>
     </>
