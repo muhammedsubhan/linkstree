@@ -146,7 +146,7 @@ const Admin = () => {
             </div>
           </div>
         </div>
-        <div className="w-[1130px]">
+        <div className="w-[1130px] h-screen">
           <AdminLinksComponent />
         </div>
       </div>
