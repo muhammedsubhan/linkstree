@@ -10,6 +10,7 @@ import { IoSettingsOutline } from "react-icons/io5";
 import Image from "next/image";
 import admin_logo from "@/public/linktree_svg.svg";
 import AdminLinksComponent from "../components/adminPageComp/AdminLinksComponent";
+import AdminPhoneView from "../components/adminPageComp/AdminPhoneView";
 
 const Admin = () => {
   const [activeNav, setActiveNav] = useState<string>("Links");
@@ -146,8 +147,11 @@ const Admin = () => {
             </div>
           </div>
         </div>
-        <div className="w-[1130px] h-screen">
+        <div className="min-w-[1130px] ">
           <AdminLinksComponent />
+        </div>
+        <div className="w-full">
+          <AdminPhoneView />
         </div>
       </div>
     </>

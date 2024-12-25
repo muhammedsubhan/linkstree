@@ -10,7 +10,7 @@ import { BsThreeDots } from "react-icons/bs";
 const AdminLinksComponent = () => {
   return (
     <>
-      <div className="border-2 border-red-600 px-5 h-screen">
+      <div className=" px-5 h-screen">
         <div className=" py-3 px-5 bg-[#DFE8F9] my-2 rounded-3xl">
           <div className="flex items-center justify-between">
             <p className="font-medium ">
