@@ -4,7 +4,12 @@ import { styled } from "@mui/material/styles";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch, { SwitchProps } from "@mui/material/Switch";
 
-const SwitchToggle = () => {
+interface SwitchToggleProps {
+  status: boolean; // Boolean type for the status prop
+  onChange: (checked: boolean) => void; // A function to handle toggle changes
+}
+
+const SwitchToggle = ({ status, onChange }: SwitchToggleProps) => {
   const IOSSwitch = styled((props: SwitchProps) => (
     <Switch
       focusVisibleClassName=".Mui-focusVisible"
@@ -30,25 +35,6 @@ const SwitchToggle = () => {
             backgroundColor: "#2ECA45",
           }),
         },
-        "&.Mui-disabled + .MuiSwitch-track": {
-          opacity: 0.5,
-        },
-      },
-      "&.Mui-focusVisible .MuiSwitch-thumb": {
-        color: "#33cf4d",
-        border: "6px solid #fff",
-      },
-      "&.Mui-disabled .MuiSwitch-thumb": {
-        color: theme.palette.grey[100],
-        ...theme.applyStyles("dark", {
-          color: theme.palette.grey[600],
-        }),
-      },
-      "&.Mui-disabled + .MuiSwitch-track": {
-        opacity: 0.7,
-        ...theme.applyStyles("dark", {
-          opacity: 0.3,
-        }),
       },
     },
     "& .MuiSwitch-thumb": {
@@ -63,16 +49,19 @@ const SwitchToggle = () => {
       transition: theme.transitions.create(["background-color"], {
         duration: 500,
       }),
-      ...theme.applyStyles("dark", {
-        backgroundColor: "#39393D",
-      }),
     },
   }));
 
   return (
     <div>
       <FormControlLabel
-        control={<IOSSwitch sx={{ m: 1 }} defaultChecked />}
+        control={
+          <IOSSwitch
+            sx={{ m: 1 }}
+            checked={status}
+            onChange={(e) => onChange(e.target.checked)}
+          />
+        }
         label=""
       />
     </div>

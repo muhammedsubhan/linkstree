@@ -31,7 +31,6 @@ const AdminPhoneView = () => {
                   </div>
                 </div>
               </div>
-              
             </div>
           </div>
         </div>

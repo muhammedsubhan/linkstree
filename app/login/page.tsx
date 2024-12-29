@@ -11,6 +11,7 @@ import { TextField, InputAdornment, IconButton } from "@mui/material";
 import Link from "next/link";
 import { redirect, useRouter } from "next/navigation";
 import { LoginCredentials, loginUser } from "../utiles/services/login.service";
+import Cookies from "js-cookie";
 
 const Login = () => {
   const [showpassword, setShowPassword] = useState<boolean>(false);
@@ -39,8 +40,16 @@ const Login = () => {
     if (!newloginUser.access_token) {
       console.log("some issues ");
     }
+    // Set the cookie using js-cookie
+    Cookies.set("accessToken", newloginUser.access_token, {
+      expires: 7, // 7 days
+      path: "/",
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+    });
 
     localStorage.setItem("accessToken", newloginUser.access_token);
+
     redirect("/admin");
   };
 

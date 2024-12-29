@@ -16,7 +16,7 @@ const Admin = () => {
   const [activeNav, setActiveNav] = useState<string>("Links");
   return (
     <>
-      <div className="bg-[#F3F3F1] flex h-screen">
+      <div className="bg-[#F3F3F1] flex h-screen ">
         <div className="border-r max-w-[240px] h-screen">
           <div className="mx-3 h-full flex flex-col">
             <div className="py-5 px-2">
@@ -150,7 +150,7 @@ const Admin = () => {
         <div className="min-w-[1130px] ">
           <AdminLinksComponent />
         </div>
-        <div className="w-full">
+        <div className="w-full ">
           <AdminPhoneView />
         </div>
       </div>
