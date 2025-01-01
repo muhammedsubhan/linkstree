@@ -19,6 +19,7 @@ const Signup = () => {
   const [showpassword, setShowPassword] = useState<boolean>(false);
   const [createUser, setCreateUser] = useState<SignUpCredentials>({
     email: "",
+    username: "",
     password: "",
   });
 
@@ -63,6 +64,36 @@ const Signup = () => {
             <form className="flex justify-center ">
               <div className="flex flex-col gap-5 lg:w-full">
                 <div className="w-full flex flex-col gap-6">
+                  <div className=" flex flex-col gap-2 bg-gray-100 xl:w-[500px] lg:w-full">
+                    <TextField
+                      id="outlined-basic"
+                      label="Username"
+                      name="username"
+                      value={createUser.username}
+                      onChange={handleOnChange}
+                      variant="outlined"
+                      className="xl:w-[500px] lg:w-full"
+                      sx={{
+                        borderRadius: "8px",
+                        "& .MuiOutlinedInput-root": {
+                          borderRadius: "8px",
+                          "&:hover fieldset": {
+                            borderColor: "lightgray",
+                            borderWidth: "2px",
+                          },
+                          "&.Mui-focused fieldset": {
+                            borderColor: "black",
+                          },
+                        },
+                        "& .MuiInputLabel-root": {
+                          color: "gray",
+                        },
+                        "& .MuiInputLabel-root.Mui-focused": {
+                          color: "gray",
+                        },
+                      }}
+                    />
+                  </div>
                   <div className=" flex flex-col gap-2 bg-gray-100 xl:w-[500px] lg:w-full">
                     <TextField
                       id="outlined-basic"

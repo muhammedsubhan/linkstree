@@ -36,6 +36,7 @@ const AdminLinksComponent = () => {
     _id: string;
     iat: number;
     exp: number;
+    username?: string;
   }>();
 
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -188,7 +189,9 @@ const AdminLinksComponent = () => {
           <div className="flex items-center">
             <div className="flex flex-col gap-3">
               <div className="flex flex-col gap-1">
-                <p className="font-semibold text-lg">@MuhammadSubhan</p>
+                <p className="font-semibold text-lg">
+                  @{decodedData?.username}
+                </p>
                 <p className="text-sm font-medium text-[#A9ABA3]">Add bio</p>
               </div>
               <div className="flex gap-4 items-center">

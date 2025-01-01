@@ -1,7 +1,8 @@
 import axios from "axios";
-
+import Cookies from "js-cookie";
 export interface LoginCredentials {
   email: string;
+  username?: "";
   password: string;
 }
 
@@ -16,6 +17,28 @@ export const loginUser = async (credentials: LoginCredentials) => {
 
     console.log("User signed up successfully:", newUser.data);
     return newUser.data;
+  } catch (error) {
+    console.error("Error signing up user:", error);
+    throw error;
+  }
+};
+
+export const getCurrentUserName = async () => {
+  const token = Cookies.get("accessToken");
+  if (!token) {
+    console.error("User is not logged in. Token is missing.");
+    return [];
+  }
+
+  try {
+    const allUsers = await axios.get("http://localhost:5000/users/all-users", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    console.log("All users:", allUsers.data);
+    return allUsers.data;
   } catch (error) {
     console.error("Error signing up user:", error);
     throw error;

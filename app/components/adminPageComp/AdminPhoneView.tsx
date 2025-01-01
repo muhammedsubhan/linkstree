@@ -4,7 +4,10 @@ import Link from "next/link";
 import React, { useEffect } from "react";
 import { CiShare2 } from "react-icons/ci";
 
-const AdminPhoneView = () => {
+interface AdminPhoneViewProps {
+  username?: string; // Make it optional to handle undefined
+}
+const AdminPhoneView: React.FC<AdminPhoneViewProps> = ({ username }) => {
   const socialLinks = useAppSelector(
     (state: RootState) => state.socialLinks.socialLinks
   );
@@ -34,10 +37,13 @@ const AdminPhoneView = () => {
               <div>
                 <div className="flex flex-col items-center gap-3 mb-5">
                   <div className="rounded-full h-20 w-20 bg-white flex items-center justify-center">
-                    <p className="font-bold text-xl">M</p>
+                    <p className="font-bold text-xl">
+                      {" "}
+                      {username ? username.charAt(0).toUpperCase() : ""}
+                    </p>
                   </div>
                   <div className="text-white font-semibold">
-                    <p>@MuhammadSubhan</p>
+                    <p>@{username}</p>
                   </div>
                 </div>
                 {socialLinks
