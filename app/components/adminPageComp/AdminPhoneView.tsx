@@ -1,5 +1,6 @@
 import { useAppSelector } from "@/app/lib/hooks";
 import { RootState } from "@/app/lib/store/store";
+import Link from "next/link";
 import React, { useEffect } from "react";
 import { CiShare2 } from "react-icons/ci";
 
@@ -39,11 +40,17 @@ const AdminPhoneView = () => {
                     <p>@MuhammadSubhan</p>
                   </div>
                 </div>
-                <div className="px-5">
-                  <div className="border-2 border-red-300 py-5 rounded-xl">
-
-                  </div>
-                </div>
+                {socialLinks
+                  ?.filter((link) => link.active)
+                  .map((link, i) => (
+                    <Link href={link.url} target="_blank" key={link._id}>
+                      <div className="px-2 scale-90 hover:scale-100 transition-transform duration-300 ease-in-out">
+                        <div className="py-4 bg-[#222222] text-white text-sm font-medium text-center rounded-xl">
+                          <p>{link.platform}</p>
+                        </div>
+                      </div>
+                    </Link>
+                  ))}
               </div>
             </div>
           </div>
