@@ -5,6 +5,9 @@ export interface LoginCredentials {
   username?: "";
   password: string;
 }
+interface UserParams {
+  username: string;
+}
 
 export const loginUser = async (credentials: LoginCredentials) => {
   const { email, password } = credentials;
@@ -22,8 +25,7 @@ export const loginUser = async (credentials: LoginCredentials) => {
     throw error;
   }
 };
-
-export const getCurrentUserName = async () => {
+export const getCurrentUsersLinks = async ({ username }: UserParams) => {
   const token = Cookies.get("accessToken");
   if (!token) {
     console.error("User is not logged in. Token is missing.");
@@ -31,11 +33,14 @@ export const getCurrentUserName = async () => {
   }
 
   try {
-    const allUsers = await axios.get("http://localhost:5000/users/all-users", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const allUsers = await axios.get(
+      `http://localhost:5000/users/username/${username}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
     console.log("All users:", allUsers.data);
     return allUsers.data;

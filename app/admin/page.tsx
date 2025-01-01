@@ -12,7 +12,6 @@ import admin_logo from "@/public/linktree_svg.svg";
 import AdminLinksComponent from "../components/adminPageComp/AdminLinksComponent";
 import AdminPhoneView from "../components/adminPageComp/AdminPhoneView";
 
-import { getCurrentUserName } from "../utiles/services/login.service";
 import jwt, { JwtPayload } from "jsonwebtoken";
 
 const Admin = () => {
@@ -25,15 +24,7 @@ const Admin = () => {
   }>();
   const [activeNav, setActiveNav] = useState<string>("Links");
 
-  const getAllUsers = async () => {
-    const users = await getCurrentUserName();
 
-    console.log(users);
-  };
-
-  useEffect(() => {
-    getAllUsers();
-  }, []);
 
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");

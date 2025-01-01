@@ -3,15 +3,36 @@ import React, { useEffect } from "react";
 import { useAppSelector } from "@/app/lib/hooks";
 import { RootState } from "@/app/lib/store/store";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { useParams } from "next/navigation";
+import { getCurrentUsersLinks } from "@/app/utiles/services/login.service";
 
 const page = () => {
+  const param = useParams();
+  console.log(param);
+
   // const socialLinks = useAppSelector(
   //   (state: RootState) => state.socialLinks.socialLinks
   // );
 
-  // useEffect(() => {
-  //   console.log("admin phone view", socialLinks);
-  // }, [socialLinks]);
+  const currentUserData = async () => {
+    if (typeof param?.username === "string") {
+      try {
+        const UserSocialLinks = await getCurrentUsersLinks({
+          username: param.username,
+        });
+        console.log("ehehehhhheh", UserSocialLinks);
+      } catch (error) {
+        console.error("Error fetching user social links:", error);
+      }
+    } else {
+      console.error("Invalid username parameter:", param?.username);
+    }
+  };
+
+  useEffect(() => {
+    currentUserData();
+  }, []);
 
   const socialLinks = [
     {

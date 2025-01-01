@@ -168,8 +168,11 @@ const AdminLinksComponent = () => {
         <div className="flex items-center justify-between">
           <p className="font-medium">
             🔥 Your Linktree is live:{" "}
-            <Link href="#" className="font-normal underline text-purple-950">
-              linktree/MuhammadSubhan
+            <Link
+              href={`/linktree/${decodedData?.username}`}
+              className="font-normal underline text-purple-950"
+            >
+              {`linktree/${decodedData?.username}`}
             </Link>
           </p>
           <div className="bg-white py-3 px-4 rounded-full">
