@@ -14,7 +14,6 @@ import {
   createSocialLinks,
   deleteSocialLinksData,
   fetchAllSocialLinks,
-  getAllSocialLinks,
   updateSocialLinksData,
 } from "@/app/utiles/services/socialLinks.service";
 import { useAppDispatch, useAppSelector } from "@/app/lib/hooks";
@@ -26,9 +25,9 @@ import {
   SocialLink,
   updateSocialLink,
 } from "@/app/lib/store/features/sociallinks/SocialLinksSlice";
-import axios from "axios";
-import Cookies from "js-cookie";
-import jwt, { JwtPayload } from "jsonwebtoken";
+
+import jwt from "jsonwebtoken";
+import { useClipboard } from "use-clipboard-copy";
 
 const AdminLinksComponent = () => {
   const [decodedData, setDecodedData] = useState<{
@@ -44,11 +43,14 @@ const AdminLinksComponent = () => {
     null
   );
   const [tempValue, setTempValue] = useState<string>("");
+  const [isCopied, setIsCopied] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
   const socialLinks = useAppSelector(
     (state: RootState) => state.socialLinks.socialLinks
   );
+
+  const clipboard = useClipboard();
 
   const handleAddClick = () => {
     if (!decodedData?._id) {
@@ -138,6 +140,14 @@ const AdminLinksComponent = () => {
     }
   };
 
+  const handleCopy = () => {
+    const url = `http://localhost:3000/linktree/${decodedData?.username}`;
+    clipboard.copy(url);
+    setIsCopied(true);
+
+    setTimeout(() => setIsCopied(false), 2000);
+  };
+
   useEffect(() => {
     fetchSocialLinks();
   }, []);
@@ -175,8 +185,11 @@ const AdminLinksComponent = () => {
               {`linktree/${decodedData?.username}`}
             </Link>
           </p>
-          <div className="bg-white py-3 px-4 rounded-full">
-            <button className="font-semibold">Copy your Linktree URL</button>
+          <div className="bg-white py-3 px-4 rounded-full" onClick={handleCopy}>
+            <button className="font-semibold">
+              {" "}
+              {isCopied ? "Copied!" : "Copy your Linktree URL"}
+            </button>
           </div>
         </div>
       </div>
@@ -305,7 +318,9 @@ const AdminLinksComponent = () => {
                             handleEditStart(item._id, "url", item.url)
                           }
                         >
-                          {item.url}
+                          {item.url.length > 20
+                            ? `${item.url.substring(0, 20)}...`
+                            : item.url}
                         </span>
                         <GoPencil
                           className="text-base text-black cursor-pointer flex-shrink-0"

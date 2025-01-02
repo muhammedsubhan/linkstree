@@ -34,18 +34,23 @@ export const getCurrentUsersLinks = async ({ username }: UserParams) => {
 
   try {
     const allUsers = await axios.get(
-      `http://localhost:5000/users/username/${username}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
+      `http://localhost:5000/users/username/${username}`
     );
 
-    console.log("All users:", allUsers.data);
     return allUsers.data;
   } catch (error) {
     console.error("Error signing up user:", error);
+    throw error;
+  }
+};
+export const getUserSocialLinksById = async (_id: string) => {
+  try {
+    const get_SocialLinks = await axios.get(
+      `http://localhost:5000/social-links/all-socials/${_id}`
+    );
+    return get_SocialLinks.data;
+  } catch (error) {
+    console.error("Error fetching user social links:", error);
     throw error;
   }
 };
