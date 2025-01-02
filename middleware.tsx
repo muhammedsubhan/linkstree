@@ -3,7 +3,11 @@ import type { NextRequest } from "next/server";
 
 export function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
-  const isPublicPath = path === "/login" || path === "/signup" || path === "/";
+  const isPublicPath =
+    path === "/login" ||
+    path === "/signup" ||
+    path === "/" ||
+    path.startsWith("/linktree/");
 
   const token = request.cookies.get("accessToken")?.value;
 
@@ -11,7 +15,11 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
-  if (token && isPublicPath) {
+  if (token && isPublicPath && !path.startsWith("/linktree/")) {
+    return NextResponse.redirect(new URL("/admin", request.url));
+  }
+
+  if (path === "/linktree") {
     return NextResponse.redirect(new URL("/admin", request.url));
   }
 
@@ -19,5 +27,12 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/admin/:path*", "/login", "/signup", "/" ],
+  matcher: [
+    "/admin/:path*",
+    "/login",
+    "/signup",
+    "/",
+    "/linktree/:username",
+    "/linktree",
+  ],
 };
