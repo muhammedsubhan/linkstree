@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { PiLinkSimpleHorizontalLight } from "react-icons/pi";
 import { PiShoppingCartSimpleThin } from "react-icons/pi";
 import { PiShapesThin } from "react-icons/pi";
@@ -11,8 +11,9 @@ import Image from "next/image";
 import admin_logo from "@/public/linktree_svg.svg";
 import AdminLinksComponent from "../components/adminPageComp/AdminLinksComponent";
 import AdminPhoneView from "../components/adminPageComp/AdminPhoneView";
-
+import Cookies from "js-cookie";
 import jwt, { JwtPayload } from "jsonwebtoken";
+import { useRouter } from "next/navigation";
 
 const Admin = () => {
   const [decodedData, setDecodedData] = useState<{
@@ -24,7 +25,17 @@ const Admin = () => {
   }>();
   const [activeNav, setActiveNav] = useState<string>("Links");
 
+  const [menuToggle, setMenuToggle] = useState<boolean>(false);
 
+  const menuRef = useRef<HTMLDivElement | null>(null);
+
+  const router = useRouter();
+
+  const handleSignOut = () => {
+    localStorage.removeItem("accessToken");
+    Cookies.remove("accessToken");
+    router.push("/login");
+  };
 
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
@@ -48,6 +59,19 @@ const Admin = () => {
     }
   }, []);
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setMenuToggle(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
     <>
       <div className="bg-[#F3F3F1] flex h-screen ">
@@ -57,7 +81,7 @@ const Admin = () => {
               <Image src={admin_logo} height={18} width={18} alt="admin_logo" />
             </div>
             <div className="flex-grow">
-              <nav className="h-full flex flex-col">
+              <nav className="h-full flex flex-col relative">
                 <ul className="flex flex-col gap-1 flex-grow">
                   <li
                     onClick={() => setActiveNav("Links")}
@@ -167,7 +191,10 @@ const Admin = () => {
                     Settings
                   </li>
                 </ul>
-                <div className=" mb-6  flex flex-col justify-end px-1.5 rounded-full hover:bg-[#E7E7E5]">
+                <div
+                  onClick={() => setMenuToggle(true)}
+                  className=" mb-6  flex flex-col justify-end px-1.5 rounded-full hover:bg-[#E7E7E5] cursor-pointer"
+                >
                   <div className="flex py-1.5 items-center gap-2 ">
                     <div className="rounded-full px-2.5 py-1.5 bg-white">
                       <p className="text-black font-semibold">
@@ -187,6 +214,14 @@ const Admin = () => {
                       </p>
                     </div>
                   </div>
+                </div>
+                <div
+                  ref={menuRef}
+                  className={`absolute bg-white rounded-e-[38px] shadow-2xl rounded-s-[38px] z-50 bottom-14 left-20 w-[320px] min-h-[650px] transition-opacity ease-in-out duration-300 ${
+                    menuToggle ? "opacity-100" : "opacity-0"
+                  }`}
+                >
+                  <button onClick={handleSignOut}>SignOut</button>
                 </div>
               </nav>
             </div>
