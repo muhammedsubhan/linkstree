@@ -12,8 +12,12 @@ import admin_logo from "@/public/linktree_svg.svg";
 import AdminLinksComponent from "../components/adminPageComp/AdminLinksComponent";
 import AdminPhoneView from "../components/adminPageComp/AdminPhoneView";
 import Cookies from "js-cookie";
-import jwt, { JwtPayload } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import { useRouter } from "next/navigation";
+import { VscAccount } from "react-icons/vsc";
+import { CiDollar } from "react-icons/ci";
+import { CiLogout } from "react-icons/ci";
+import { CiCircleQuestion } from "react-icons/ci";
 
 const Admin = () => {
   const [decodedData, setDecodedData] = useState<{
@@ -193,7 +197,7 @@ const Admin = () => {
                 </ul>
                 <div
                   onClick={() => setMenuToggle(true)}
-                  className=" mb-6  flex flex-col justify-end px-1.5 rounded-full hover:bg-[#E7E7E5] cursor-pointer"
+                  className="  mb-6  flex flex-col justify-end px-1.5 rounded-full hover:bg-[#E7E7E5] cursor-pointer"
                 >
                   <div className="flex py-1.5 items-center gap-2 ">
                     <div className="rounded-full px-2.5 py-1.5 bg-white">
@@ -217,11 +221,72 @@ const Admin = () => {
                 </div>
                 <div
                   ref={menuRef}
-                  className={`absolute bg-white rounded-e-[38px] shadow-2xl rounded-s-[38px] z-50 bottom-14 left-20 w-[320px] min-h-[650px] transition-opacity ease-in-out duration-300 ${
+                  className={`py-6 absolute bg-white rounded-e-[38px] shadow-2xl rounded-s-[38px] z-50 bottom-14 left-20 w-[350px] max-h-[650px] transition-opacity ease-in-out duration-300 ${
                     menuToggle ? "opacity-100" : "opacity-0"
                   }`}
                 >
-                  <button onClick={handleSignOut}>SignOut</button>
+                  <div className="flex  items-center py-3  gap-3 px-5">
+                    <div className="h-12 w-[58px] rounded-full bg-[#F5F6F8] text-black flex flex-col items-center justify-center">
+                      <p className="font-bold text-base">
+                        {decodedData?.username
+                          ? decodedData.username.charAt(0).toUpperCase()
+                          : ""}
+                      </p>
+                    </div>
+                    <div className="flex flex-col gap-2 w-full">
+                      <div className="flex flex-col gap-1">
+                        <p className="text-black font-semibold ">
+                          @ {decodedData?.username}
+                        </p>
+                        <p className="text-xs text-[#969991] font-normal ">
+                          {` linktree/${decodedData?.username}`}
+                        </p>
+                      </div>
+                      <div className="flex items-center justify-center w-11 h-6 bg-[#E0E2D9] rounded-3xl">
+                        <p className="text-sm font-semibold text-[#6D7165]">
+                          Free
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="py-2  ">
+                    <div className="mb-6">
+                      <p className=" text-[#676B5F] font-medium text-[15px] px-5">
+                        Account
+                      </p>
+                    </div>
+                    <div>
+                      <ul className="px-2 flex flex-col gap-1">
+                        <li className="flex gap-5 px-2.5 items-center cursor-pointer rounded-xl hover:bg-[#F6F7F5] text-[15px]  py-3">
+                          <VscAccount className="text-xl" /> My account
+                        </li>
+                        <li className="flex gap-5 px-2.5 items-center rounded-xl cursor-pointer hover:bg-[#F6F7F5] text-[15px]  py-3">
+                          <CiDollar className="text-xl" /> Billing
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div className="py-2  ">
+                    <div className="mb-6">
+                      <p className=" text-[#676B5F] font-medium text-[15px] px-5">
+                        Support
+                      </p>
+                    </div>
+                    <div>
+                      <ul className="px-2 flex flex-col gap-1">
+                        <li className="flex gap-5 px-2.5 items-center cursor-pointer  rounded-xl hover:bg-[#F6F7F5] text-[15px]  py-3">
+                          <CiCircleQuestion className="text-xl" /> Ask a
+                          question
+                        </li>
+                        <li
+                          onClick={() => handleSignOut()}
+                          className="flex gap-5 px-2.5 items-center cursor-pointer rounded-xl hover:bg-[#F6F7F5] text-[15px]  py-3"
+                        >
+                          <CiLogout className="text-xl" /> Sign out
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
                 </div>
               </nav>
             </div>
