@@ -9,7 +9,7 @@ import { FaRegEye } from "react-icons/fa6";
 import { FaRegEyeSlash } from "react-icons/fa6";
 import { TextField, InputAdornment, IconButton } from "@mui/material";
 import Link from "next/link";
-import { redirect, useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 import { LoginCredentials, loginUser } from "../utiles/services/login.service";
 import Cookies from "js-cookie";
 
@@ -19,8 +19,6 @@ const Login = () => {
     email: "",
     password: "",
   });
-
-  const router = useRouter();
 
   const handleShowPassword = () => {
     setShowPassword((prevValue) => !prevValue);
@@ -179,9 +177,11 @@ const Login = () => {
                   </div>
                 </div>
                 <div className="flex  justify-center gap-3 mt-4">
-                  <p className="underline text-purple-600 cursor-pointer">
-                    Forgot password?
-                  </p>
+                  <Link href="/forgot-password">
+                    <p className="underline text-purple-600 cursor-pointer">
+                      Forgot password?
+                    </p>
+                  </Link>
                   <p className="text-xl">•</p>
                   <p className="underline text-purple-600 cursor-pointer">
                     Forgot email?

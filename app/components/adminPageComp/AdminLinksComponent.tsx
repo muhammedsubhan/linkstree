@@ -52,25 +52,35 @@ const AdminLinksComponent = () => {
 
   const clipboard = useClipboard();
 
-  const handleAddClick = () => {
-    if (!decodedData?._id) {
-      console.error("User ID is missing");
-      return;
-    }
+const handleAddClick = async () => {
+  if (!decodedData?._id) {
+    console.error("User ID is missing");
+    return;
+  }
 
-    dispatch(addSocialLinkStart());
+  dispatch(addSocialLinkStart());
 
-    const newLink: SocialLink = {
-      userId: decodedData._id,
-      platform: "defaultPlatform",
-      url: "http://default.url",
-      active: false,
-      _id: "",
-    };
-
-    createSocialLinks(newLink);
-    dispatch(addSocialLinkSuccess(newLink));
+  const newLink: SocialLink = {
+    userId: decodedData._id,
+    platform: "defaultPlatform",
+    url: "http://default.url",
+    active: false,
+    _id: "",  
   };
+
+  try {
+    const createdLink = await createSocialLinks(newLink);
+    
+    
+    if (createdLink) {
+      dispatch(addSocialLinkSuccess(createdLink)); 
+    } else {
+      console.error("Failed to create social link");
+    }
+  } catch (error) {
+    console.error("Error creating social link:", error);
+  }
+};
 
   const handleEditStart = (
     id: string,
@@ -110,10 +120,18 @@ const AdminLinksComponent = () => {
     value: string | boolean
   ) => {
     const updatedLink = socialLinks.find((link) => link._id === id);
+  
     if (updatedLink) {
       const updatedData = { ...updatedLink, [field]: value };
-      dispatch(updateSocialLink(updatedData));
-      const updatedSocialsData = await updateSocialLinksData(updatedData);
+      dispatch(updateSocialLink(updatedData)); 
+      
+      try {
+       
+        const updatedSocialsData = await updateSocialLinksData(updatedData);
+        console.log("Updated socials data:", updatedSocialsData);
+      } catch (error) {
+        console.error("Error updating social link:", error);
+      }
     } else {
       console.error(`Social link with _id ${id} not found`);
     }

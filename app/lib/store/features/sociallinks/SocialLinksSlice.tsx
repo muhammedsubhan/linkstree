@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import type { RootState } from "../../store";
 
 export interface SocialLink {
   userId: string;
@@ -36,7 +35,15 @@ export const SocialLinksSlice = createSlice({
       if (Array.isArray(action.payload)) {
         state.socialLinks = action.payload;
       } else {
-        state.socialLinks.push(action.payload);
+       
+        const existingLinkIndex = state.socialLinks.findIndex(
+          (link) => link._id === action.payload._id
+        );
+        if (existingLinkIndex === -1) {
+          state.socialLinks.push(action.payload); 
+        } else {
+          state.socialLinks[existingLinkIndex] = action.payload;
+        }
       }
     },
     addSocialLinkFailure: (state, action: PayloadAction<string>) => {

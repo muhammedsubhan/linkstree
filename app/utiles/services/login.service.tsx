@@ -54,3 +54,18 @@ export const getUserSocialLinksById = async (_id: string) => {
     throw error;
   }
 };
+
+export const forgotPassword = async (email: string) => {
+  try {
+    const forgot_password = await axios.post(
+      `http://localhost:5000/users/forgot-password`,
+      {
+        email,
+      }
+    );
+    return forgot_password.data;
+  } catch (error) {
+    console.error("Error fetching user social links:", error);
+    throw error;
+  }
+};
