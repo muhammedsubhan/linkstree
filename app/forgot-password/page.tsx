@@ -16,7 +16,8 @@ const ForgotPassword = () => {
 
     try {
       const response = await forgotPassword(email);
-      console.log(response.data);
+      console.log(response?.message);
+      setEmail("");
     } catch (error) {
       console.error("Error sending reset password email:", error);
     } finally {
@@ -77,9 +78,11 @@ const ForgotPassword = () => {
                 <div
                   className="cursor-pointer bg-purple-700 text-white py-2 text-center rounded-full w-full"
                   onClick={handleForgotPassword}
-                  disabled={loading || !email.trim()} 
                 >
-                  <button className="text-base font-medium">
+                  <button
+                    className="text-base font-medium"
+                    disabled={loading || !email.trim()}
+                  >
                     {loading ? "Sending..." : "Reset Password"}
                   </button>
                 </div>
