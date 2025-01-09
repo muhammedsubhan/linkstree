@@ -12,6 +12,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { LoginCredentials, loginUser } from "../utiles/services/login.service";
 import Cookies from "js-cookie";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const [showpassword, setShowPassword] = useState<boolean>(false);
@@ -36,11 +37,13 @@ const Login = () => {
     const newloginUser = await loginUser(loginUserData);
 
     if (!newloginUser.access_token) {
-      console.log("some issues ");
+      toast.error("Token is missing");
     }
-    // Set the cookie using js-cookie
+
+    toast.success(`you are login successfully`);
+
     Cookies.set("accessToken", newloginUser.access_token, {
-      expires: 7, // 7 days
+      expires: 7,
       path: "/",
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",

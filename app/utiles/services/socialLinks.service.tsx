@@ -1,9 +1,11 @@
 import { SocialLink } from "@/app/lib/store/features/sociallinks/SocialLinksSlice";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { toast } from "react-toastify";
 
-
-export const createSocialLinks = async (link: SocialLink): Promise<SocialLink | null> => {
+export const createSocialLinks = async (
+  link: SocialLink
+): Promise<SocialLink | null> => {
   const token = Cookies.get("accessToken");
 
   if (!token) {
@@ -22,10 +24,13 @@ export const createSocialLinks = async (link: SocialLink): Promise<SocialLink | 
       }
     );
     console.log("Social link created:", response.data);
-    return response.data; 
+    toast.success("Social link created successfully");
+
+    return response.data;
   } catch (error) {
+    toast.error("Error creating social link");
     console.error("Error creating social link:", error);
-    return null; 
+    return null;
   }
 };
 
@@ -45,7 +50,7 @@ export const getAllSocialLinks = async () => {
 
     return response.data;
   } catch (error) {
-    console.error("Error fetching social links:",error);
+    console.error("Error fetching social links:", error);
     return [];
   }
 };
@@ -68,9 +73,12 @@ export const updateSocialLinksData = async (link: SocialLink) => {
         },
       }
     );
+    toast.success("Social link updated successfully");
+
     console.log("Social link created:", createlinks.data);
   } catch (error) {
-    console.error("Error creating social link:",error);
+    toast.error("Error updating social link");
+    console.error("Error creating social link:", error);
   }
 };
 
@@ -93,8 +101,10 @@ export const deleteSocialLinksData = async (id: string) => {
       }
     );
     console.log("Social link created:", createlinks.data);
+    toast.success("Social link deleted successfully");
   } catch (error) {
-    console.error("Error creating social link:",error);
+    toast.success("Error deleting social link");
+    console.error("Error creating social link:", error);
   }
 };
 

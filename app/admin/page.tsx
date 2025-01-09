@@ -32,6 +32,7 @@ const Admin = () => {
   const [menuToggle, setMenuToggle] = useState<boolean>(false);
 
   const menuRef = useRef<HTMLDivElement | null>(null);
+  const [avatar, setAvatar] = useState<string | null>(null);
 
   const router = useRouter();
 
@@ -74,6 +75,14 @@ const Admin = () => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
+  }, []);
+
+  // Check localStorage for the avatar image URL
+  useEffect(() => {
+    const savedAvatar = localStorage.getItem("avatarUrl");
+    if (savedAvatar) {
+      setAvatar(savedAvatar.replace(/^"|"$/g, ""));
+    }
   }, []);
 
   return (
@@ -201,12 +210,21 @@ const Admin = () => {
                 >
                   <div className="flex py-1.5 items-center gap-2 ">
                     <div className="rounded-full px-2.5 py-1.5 bg-white">
-                      <p className="text-black font-semibold">
-                        {" "}
-                        {decodedData?.username
-                          ? decodedData.username.charAt(0).toUpperCase()
-                          : ""}
-                      </p>
+                      {avatar ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={avatar}
+                          alt="User Avatar"
+                          className="rounded-full h-12 w-12 object-cover"
+                        />
+                      ) : (
+                        <p className="text-black font-semibold">
+                          {" "}
+                          {decodedData?.username
+                            ? decodedData.username.charAt(0).toUpperCase()
+                            : ""}
+                        </p>
+                      )}
                     </div>
                     <div>
                       <p className="text-sm font-semibold">

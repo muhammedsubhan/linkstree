@@ -5,7 +5,7 @@ import logo from "@/public/linktree-logo.png";
 import { IconButton, InputAdornment, TextField } from "@mui/material";
 import Link from "next/link";
 import { CiShare1 } from "react-icons/ci";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
 import { resetPassword } from "../utiles/services/login.service";
 
@@ -17,6 +17,7 @@ const ResetPassword = () => {
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
 
+  const router = useRouter();
 
   const handleShowPassword = () => setShowPassword((prev) => !prev);
 
@@ -26,20 +27,20 @@ const ResetPassword = () => {
     setPassword(e.target.value);
   };
 
- const handleForgotPassword = async () => {
+  const handleForgotPassword = async () => {
     setLoading(true);
 
     try {
       if (token && password.trim()) {
         const response = await resetPassword({ token, password });
         console.log(response);
-        alert("Password reset successful");
+        setPassword("");
+        router.push("/login");
       } else {
         console.error("Token or password is missing");
       }
     } catch (error) {
       console.error("Error resetting password:", error);
-      alert("Error resetting password.");
     } finally {
       setLoading(false);
     }

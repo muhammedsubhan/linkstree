@@ -1,4 +1,5 @@
 import axios from "axios";
+import { toast } from "react-toastify";
 
 export interface SignUpCredentials {
   email: string;
@@ -16,12 +17,14 @@ export const SignUpUser = async (credentials: SignUpCredentials) => {
       username,
     });
     console.log("User signed up successfully:", newUser.data);
+    toast.success("User created successfully");
+
     return newUser.data;
   } catch (error: any) {
     if (error.response?.data?.message) {
-      throw new Error(error.response.data.message);
+      toast.error(error.response.data.message);
     } else {
-      throw new Error("An unexpected error occurred!");
+      toast.error("An error occurred while signing up");
     }
   }
 };

@@ -28,6 +28,9 @@ import {
 
 import jwt from "jsonwebtoken";
 import { useClipboard } from "use-clipboard-copy";
+import Image from "next/image";
+import { handleUploadUserAvatar } from "@/app/utiles/services/login.service";
+import { toast } from "react-toastify";
 
 const AdminLinksComponent = () => {
   const [decodedData, setDecodedData] = useState<{
@@ -45,6 +48,9 @@ const AdminLinksComponent = () => {
   const [tempValue, setTempValue] = useState<string>("");
   const [isCopied, setIsCopied] = useState<boolean>(false);
 
+  const [avatar, setAvatar] = useState<string>();
+  const [uploading, setUploading] = useState<boolean>(false);
+
   const dispatch = useAppDispatch();
   const socialLinks = useAppSelector(
     (state: RootState) => state.socialLinks.socialLinks
@@ -52,35 +58,34 @@ const AdminLinksComponent = () => {
 
   const clipboard = useClipboard();
 
-const handleAddClick = async () => {
-  if (!decodedData?._id) {
-    console.error("User ID is missing");
-    return;
-  }
-
-  dispatch(addSocialLinkStart());
-
-  const newLink: SocialLink = {
-    userId: decodedData._id,
-    platform: "defaultPlatform",
-    url: "http://default.url",
-    active: false,
-    _id: "",  
-  };
-
-  try {
-    const createdLink = await createSocialLinks(newLink);
-    
-    
-    if (createdLink) {
-      dispatch(addSocialLinkSuccess(createdLink)); 
-    } else {
-      console.error("Failed to create social link");
+  const handleAddClick = async () => {
+    if (!decodedData?._id) {
+      console.error("User ID is missing");
+      return;
     }
-  } catch (error) {
-    console.error("Error creating social link:", error);
-  }
-};
+
+    dispatch(addSocialLinkStart());
+
+    const newLink: SocialLink = {
+      userId: decodedData._id,
+      platform: "defaultPlatform",
+      url: "http://default.url",
+      active: false,
+      _id: "",
+    };
+
+    try {
+      const createdLink = await createSocialLinks(newLink);
+
+      if (createdLink) {
+        dispatch(addSocialLinkSuccess(createdLink));
+      } else {
+        console.error("Failed to create social link");
+      }
+    } catch (error) {
+      console.error("Error creating social link:", error);
+    }
+  };
 
   const handleEditStart = (
     id: string,
@@ -120,13 +125,12 @@ const handleAddClick = async () => {
     value: string | boolean
   ) => {
     const updatedLink = socialLinks.find((link) => link._id === id);
-  
+
     if (updatedLink) {
       const updatedData = { ...updatedLink, [field]: value };
-      dispatch(updateSocialLink(updatedData)); 
-      
+      dispatch(updateSocialLink(updatedData));
+
       try {
-       
         const updatedSocialsData = await updateSocialLinksData(updatedData);
         console.log("Updated socials data:", updatedSocialsData);
       } catch (error) {
@@ -189,6 +193,51 @@ const handleAddClick = async () => {
       console.log("No access token found");
     }
   }, []);
+  const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        setAvatar(reader.result as string);
+      };
+
+      reader.readAsDataURL(file);
+
+      setUploading(true);
+
+      const formData = new FormData();
+      formData.append("file", file);
+
+      if (decodedData?._id) {
+        formData.append("userId", decodedData._id);
+      } else {
+        console.error("User ID is missing");
+        return;
+      }
+
+      try {
+        const response = await handleUploadUserAvatar(formData);
+        console.log("Upload Response:", response);
+
+        if (response) {
+          localStorage.setItem("avatarUrl", JSON.stringify(response.key));
+        }
+      } catch (error) {
+        console.error("Error uploading avatar:", error);
+      } finally {
+        setUploading(false);
+      }
+    }
+  };
+
+  useEffect(() => {
+    const storedAvatar = localStorage.getItem("avatarUrl");
+    console.log(`${storedAvatar}`);
+    if (storedAvatar) {
+      setAvatar(storedAvatar.replace(/^"|"$/g, ""));
+    }
+  }, []);
 
   return (
     <div className="px-5 h-screen">
@@ -214,12 +263,38 @@ const handleAddClick = async () => {
 
       <div className="py-5 px-2 flex items-center justify-around">
         <div className="flex items-center gap-3">
+          {/* users avatar / profile image */}
           <div className="relative rounded-full bg-black text-white flex items-center justify-center w-[70px] h-[70px]">
-            <p className="font-semibold text-lg">@</p>
-            <div className="absolute -bottom-1 -right-1 bg-white text-black rounded-full px-2 py-2">
+            {avatar ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={avatar}
+                alt="User Avatar"
+                className="rounded-full w-full h-full object-cover"
+              />
+            ) : (
+              <div className="text-xl text-white">No Avatar</div>
+            )}
+            <input
+              type="file"
+              accept="image/*"
+              id="avatar-upload"
+              className="hidden"
+              onChange={handleAvatarUpload}
+            />
+            <div
+              className="absolute -bottom-1 -right-1 bg-white text-black rounded-full px-2 py-2 cursor-pointer"
+              onClick={() => document.getElementById("avatar-upload")?.click()}
+            >
               <GoPencil className="text-lg text-[#A8AAA2]" />
             </div>
+            {uploading && (
+              <p className="absolute bottom-[-20px] text-sm text-gray-600">
+                Uploading...
+              </p>
+            )}
           </div>
+
           <div className="flex items-center">
             <div className="flex flex-col gap-3">
               <div className="flex flex-col gap-1">

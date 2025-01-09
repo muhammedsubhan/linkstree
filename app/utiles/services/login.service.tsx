@@ -1,5 +1,7 @@
 import axios from "axios";
 import Cookies from "js-cookie";
+import { toast } from "react-toastify";
+
 export interface LoginCredentials {
   email: string;
   username?: "";
@@ -20,9 +22,15 @@ export const loginUser = async (credentials: LoginCredentials) => {
 
     console.log("User signed up successfully:", newUser.data);
     return newUser.data;
-  } catch (error) {
-    console.error("Error signing up user:", error);
-    throw error;
+  } catch (error: any) {
+    if (error.response && error.response.data && error.response.data.message) {
+      toast.error(error.response.data.message);
+    } else {
+      toast.error("An error occurred while logging in");
+    }
+    console.error("Error signing in user:", error);
+
+    return null;
   }
 };
 export const getCurrentUsersLinks = async ({ username }: UserParams) => {
@@ -40,7 +48,7 @@ export const getCurrentUsersLinks = async ({ username }: UserParams) => {
     return allUsers.data;
   } catch (error) {
     console.error("Error signing up user:", error);
-    throw error;
+    // throw error;
   }
 };
 export const getUserSocialLinksById = async (_id: string) => {
@@ -51,7 +59,7 @@ export const getUserSocialLinksById = async (_id: string) => {
     return get_SocialLinks.data;
   } catch (error) {
     console.error("Error fetching user social links:", error);
-    throw error;
+    // throw error;
   }
 };
 
@@ -63,10 +71,12 @@ export const forgotPassword = async (email: string) => {
         email,
       }
     );
+    toast.success("Password reset link sent to your email");
     return forgot_password.data;
   } catch (error) {
+    toast.error("An error occurred while sending password reset link");
     console.error("Error fetching user social links:", error);
-    throw error;
+    // throw error;
   }
 };
 
@@ -87,9 +97,52 @@ export const resetPassword = async ({
         token,
       }
     );
+    toast.success("Password reset successful");
     return reset_password.data;
   } catch (error) {
+    toast.error("An error occurred while resetting password");
+
     console.error("Error resetting password:", error);
-    throw error;
+    // throw error;
+  }
+};
+
+export const handleUploadUserAvatar = async (
+  formData: FormData
+): Promise<string | null> => {
+  const token = Cookies.get("accessToken");
+
+  if (!token) {
+    console.error("User is not logged in. Token is missing.");
+    return null;
+  }
+
+  try {
+    const response = await fetch("http://localhost:5000/users/upload", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: formData,
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to upload avatar. Status: ${response.status}`);
+    }
+
+    const responseBody = await response.json();
+    console.log("Server Response:", responseBody);
+
+    if (!responseBody) {
+      throw new Error("Upload successful, but no URL returned.");
+    }
+
+    toast.success("Avatar uploaded successfully");
+
+    return responseBody;
+  } catch (error) {
+    toast.error("An error occurred while uploading avatar");
+    console.error("Error uploading user avatar:", error);
+    return null;
   }
 };

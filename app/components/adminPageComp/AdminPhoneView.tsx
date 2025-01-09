@@ -1,7 +1,7 @@
 import { useAppSelector } from "@/app/lib/hooks";
 import { RootState } from "@/app/lib/store/store";
 import Link from "next/link";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { CiShare2 } from "react-icons/ci";
 
 interface AdminPhoneViewProps {
@@ -11,6 +11,15 @@ const AdminPhoneView: React.FC<AdminPhoneViewProps> = ({ username }) => {
   const socialLinks = useAppSelector(
     (state: RootState) => state.socialLinks.socialLinks
   );
+  const [avatar, setAvatar] = useState<string | null>(null);
+
+  // Check localStorage for the avatar image URL
+  useEffect(() => {
+    const savedAvatar = localStorage.getItem("avatarUrl");
+    if (savedAvatar) {
+      setAvatar(savedAvatar.replace(/^"|"$/g, ""));
+    }
+  }, []);
 
   useEffect(() => {
     console.log("admin phone view", socialLinks);
@@ -37,10 +46,19 @@ const AdminPhoneView: React.FC<AdminPhoneViewProps> = ({ username }) => {
               <div>
                 <div className="flex flex-col items-center gap-3 mb-5">
                   <div className="rounded-full h-20 w-20 bg-white flex items-center justify-center">
-                    <p className="font-bold text-xl">
-                      {" "}
-                      {username ? username.charAt(0).toUpperCase() : ""}
-                    </p>
+                    {avatar ? (
+                      
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={avatar}
+                        alt="User Avatar"
+                        className="rounded-full h-full w-full object-cover"
+                      />
+                    ) : (
+                      <p className="font-bold text-xl">
+                        {username ? username.charAt(0).toUpperCase() : ""}
+                      </p>
+                    )}
                   </div>
                   <div className="text-white font-semibold">
                     <p>@{username}</p>

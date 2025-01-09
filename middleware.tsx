@@ -15,6 +15,10 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
+  // if (path === "/reset-password" && !token) {
+  //   return NextResponse.redirect(new URL("/login", request.url));
+  // }
+
   if (token && isPublicPath && !path.startsWith("/linktree/")) {
     return NextResponse.redirect(new URL("/admin", request.url));
   }
@@ -34,5 +38,6 @@ export const config = {
     "/",
     "/linktree/:username",
     "/linktree",
+    // "/reset-password",
   ],
 };
