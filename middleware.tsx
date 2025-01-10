@@ -38,6 +38,8 @@ export const config = {
     "/",
     "/linktree/:username",
     "/linktree",
+    "/linktree/:path*", // This makes all /linktree/* paths public
+
     // "/reset-password",
   ],
 };

@@ -34,12 +34,6 @@ export const loginUser = async (credentials: LoginCredentials) => {
   }
 };
 export const getCurrentUsersLinks = async ({ username }: UserParams) => {
-  const token = Cookies.get("accessToken");
-  if (!token) {
-    console.error("User is not logged in. Token is missing.");
-    return [];
-  }
-
   try {
     const allUsers = await axios.get(
       `http://localhost:5000/users/username/${username}`
@@ -147,7 +141,9 @@ export const handleUploadUserAvatar = async (
   }
 };
 
-export const getAvatarByUsersId = async (userId: string): Promise<string | null> => {
+export const getAvatarByUsersId = async (
+  userId: string
+): Promise<string | null> => {
   const token = Cookies.get("accessToken");
 
   if (!token) {

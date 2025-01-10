@@ -249,17 +249,15 @@ const AdminLinksComponent = () => {
   const getCurrentUsersAvatar = async () => {
     try {
       if (decodedData?._id) {
-        // Fetch avatar using user ID
         const response = await getAvatarByUsersId(decodedData._id);
         console.log("Avatar Response backend:", response);
 
-        // Check if response is valid and contains the expected key
         if (response) {
           const avatarData: Avatar = {
-            key: response, // Assuming response has the 'key' property
-            message: "Image fetched successfully", // Add a message or fetch it if available
+            key: response,
+            message: "Image fetched successfully"
           };
-          // Dispatch the action with the created Avatar object
+          
           dispatch(setAvatar(avatarData));
         } else {
           console.error("Avatar key is missing in the response");
