@@ -146,3 +146,34 @@ export const handleUploadUserAvatar = async (
     return null;
   }
 };
+
+export const getAvatarByUsersId = async (userId: string): Promise<string | null> => {
+  const token = Cookies.get("accessToken");
+
+  if (!token) {
+    console.error("User is not logged in. Token is missing.");
+    return null;
+  }
+
+  try {
+    const response = await axios.get(
+      `http://localhost:5000/users/avatar/${userId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (response.data && response.data.avatar) {
+      console.log("User Avatar URL:", response.data.avatar);
+      return response.data.avatar;
+    } else {
+      throw new Error("No avatar found for this user");
+    }
+  } catch (error) {
+    toast.error("An error occurred while fetching avatar");
+    console.error("Error fetching user avatar:", error);
+    return null;
+  }
+};

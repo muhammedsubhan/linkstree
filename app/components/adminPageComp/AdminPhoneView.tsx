@@ -1,25 +1,19 @@
 import { useAppSelector } from "@/app/lib/hooks";
 import { RootState } from "@/app/lib/store/store";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { CiShare2 } from "react-icons/ci";
 
 interface AdminPhoneViewProps {
-  username?: string; // Make it optional to handle undefined
+  username?: string;
 }
 const AdminPhoneView: React.FC<AdminPhoneViewProps> = ({ username }) => {
   const socialLinks = useAppSelector(
     (state: RootState) => state.socialLinks.socialLinks
   );
-  const [avatar, setAvatar] = useState<string | null>(null);
-
-  // Check localStorage for the avatar image URL
-  useEffect(() => {
-    const savedAvatar = localStorage.getItem("avatarUrl");
-    if (savedAvatar) {
-      setAvatar(savedAvatar.replace(/^"|"$/g, ""));
-    }
-  }, []);
+  const UsersAvatar = useAppSelector(
+    (state: RootState) => state.userAvatar.Avatar
+  );
 
   useEffect(() => {
     console.log("admin phone view", socialLinks);
@@ -46,11 +40,10 @@ const AdminPhoneView: React.FC<AdminPhoneViewProps> = ({ username }) => {
               <div>
                 <div className="flex flex-col items-center gap-3 mb-5">
                   <div className="rounded-full h-20 w-20 bg-white flex items-center justify-center">
-                    {avatar ? (
-                      
+                    {UsersAvatar && UsersAvatar.key ? (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
-                        src={avatar}
+                        src={UsersAvatar.key}
                         alt="User Avatar"
                         className="rounded-full h-full w-full object-cover"
                       />

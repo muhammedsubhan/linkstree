@@ -29,8 +29,15 @@ import {
 import jwt from "jsonwebtoken";
 import { useClipboard } from "use-clipboard-copy";
 import Image from "next/image";
-import { handleUploadUserAvatar } from "@/app/utiles/services/login.service";
+import {
+  getAvatarByUsersId,
+  handleUploadUserAvatar,
+} from "@/app/utiles/services/login.service";
 import { toast } from "react-toastify";
+import {
+  Avatar,
+  setAvatar,
+} from "@/app/lib/store/features/avatarSlice/AvatarSlice";
 
 const AdminLinksComponent = () => {
   const [decodedData, setDecodedData] = useState<{
@@ -48,12 +55,16 @@ const AdminLinksComponent = () => {
   const [tempValue, setTempValue] = useState<string>("");
   const [isCopied, setIsCopied] = useState<boolean>(false);
 
-  const [avatar, setAvatar] = useState<string>();
+  const [avatar, setAvatarState] = useState<string>();
   const [uploading, setUploading] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
   const socialLinks = useAppSelector(
     (state: RootState) => state.socialLinks.socialLinks
+  );
+
+  const UsersAvatar = useAppSelector(
+    (state: RootState) => state.userAvatar.Avatar
   );
 
   const clipboard = useClipboard();
@@ -199,7 +210,7 @@ const AdminLinksComponent = () => {
       const reader = new FileReader();
 
       reader.onload = () => {
-        setAvatar(reader.result as string);
+        setAvatarState(reader.result as string);
       };
 
       reader.readAsDataURL(file);
@@ -221,7 +232,12 @@ const AdminLinksComponent = () => {
         console.log("Upload Response:", response);
 
         if (response) {
-          localStorage.setItem("avatarUrl", JSON.stringify(response.key));
+          const avatarData = {
+            key: response?.key,
+            message: "Image uploaded successfully",
+          };
+          dispatch(setAvatar(avatarData));
+          localStorage.setItem("avatarUrl", JSON.stringify(response?.key));
         }
       } catch (error) {
         console.error("Error uploading avatar:", error);
@@ -230,14 +246,39 @@ const AdminLinksComponent = () => {
       }
     }
   };
+  const getCurrentUsersAvatar = async () => {
+    try {
+      if (decodedData?._id) {
+        // Fetch avatar using user ID
+        const response = await getAvatarByUsersId(decodedData._id);
+        console.log("Avatar Response backend:", response);
+
+        // Check if response is valid and contains the expected key
+        if (response) {
+          const avatarData: Avatar = {
+            key: response, // Assuming response has the 'key' property
+            message: "Image fetched successfully", // Add a message or fetch it if available
+          };
+          // Dispatch the action with the created Avatar object
+          dispatch(setAvatar(avatarData));
+        } else {
+          console.error("Avatar key is missing in the response");
+        }
+      } else {
+        console.error("User ID is missing");
+      }
+    } catch (error) {
+      console.error("Error fetching avatar:", error);
+    }
+  };
 
   useEffect(() => {
-    const storedAvatar = localStorage.getItem("avatarUrl");
-    console.log(`${storedAvatar}`);
-    if (storedAvatar) {
-      setAvatar(storedAvatar.replace(/^"|"$/g, ""));
+    if (decodedData?._id) {
+      getCurrentUsersAvatar();
+    } else {
+      console.log("User ID is not available");
     }
-  }, []);
+  }, [decodedData]);
 
   return (
     <div className="px-5 h-screen">
@@ -265,15 +306,18 @@ const AdminLinksComponent = () => {
         <div className="flex items-center gap-3">
           {/* users avatar / profile image */}
           <div className="relative rounded-full bg-black text-white flex items-center justify-center w-[70px] h-[70px]">
-            {avatar ? (
+            {UsersAvatar && UsersAvatar.key ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={avatar}
+              <Image
+                src={UsersAvatar.key}
                 alt="User Avatar"
+                fill
                 className="rounded-full w-full h-full object-cover"
               />
             ) : (
-              <div className="text-xl text-white">No Avatar</div>
+              <div className="text-xl flex items-center justify-center text-white">
+                <p>@</p>
+              </div>
             )}
             <input
               type="file"

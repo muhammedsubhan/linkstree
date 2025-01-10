@@ -18,6 +18,8 @@ import { VscAccount } from "react-icons/vsc";
 import { CiDollar } from "react-icons/ci";
 import { CiLogout } from "react-icons/ci";
 import { CiCircleQuestion } from "react-icons/ci";
+import { useAppSelector } from "../lib/hooks";
+import { RootState } from "../lib/store/store";
 
 const Admin = () => {
   const [decodedData, setDecodedData] = useState<{
@@ -32,7 +34,10 @@ const Admin = () => {
   const [menuToggle, setMenuToggle] = useState<boolean>(false);
 
   const menuRef = useRef<HTMLDivElement | null>(null);
-  const [avatar, setAvatar] = useState<string | null>(null);
+
+  const UsersAvatar = useAppSelector(
+    (state: RootState) => state.userAvatar.Avatar
+  );
 
   const router = useRouter();
 
@@ -75,14 +80,6 @@ const Admin = () => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
-
-  // Check localStorage for the avatar image URL
-  useEffect(() => {
-    const savedAvatar = localStorage.getItem("avatarUrl");
-    if (savedAvatar) {
-      setAvatar(savedAvatar.replace(/^"|"$/g, ""));
-    }
   }, []);
 
   return (
@@ -210,10 +207,10 @@ const Admin = () => {
                 >
                   <div className="flex py-1.5 items-center gap-2 ">
                     <div className="rounded-full px-2.5 py-1.5 bg-white">
-                      {avatar ? (
+                      {UsersAvatar && UsersAvatar.key ? (
                         // eslint-disable-next-line @next/next/no-img-element
                         <img
-                          src={avatar}
+                          src={UsersAvatar.key}
                           alt="User Avatar"
                           className="rounded-full h-12 w-12 object-cover"
                         />
